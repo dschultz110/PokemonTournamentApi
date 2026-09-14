@@ -30,23 +30,23 @@ namespace PokemonTournamentApi.Controllers
         [ProducesResponseType(typeof(IEnumerable<PokemonStatisticDto>), StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
         public async Task<IActionResult> GetStatistics(
-            [FromQuery] string sortBy = "wins",
+            [FromQuery] string? sortBy = null,
             [FromQuery] string sortDirection = "asc",
             CancellationToken cancellationToken = default)
         {
-            if (String.IsNullOrWhiteSpace(sortBy))
+            if (string.IsNullOrWhiteSpace(sortBy))
             {
-                return BadRequest("sortBy parameter is required.");
+                return BadRequest(new { error = "sortBy parameter is required" });
             }
 
             if (!ValidSortByValues.Contains(sortBy))
             {
-                return BadRequest($"sortBy parameter is invalid");
+                return BadRequest(new { error = "sortBy parameter is invalid" });
             }
 
             if (!ValidSortDirectionValues.Contains(sortDirection))
             {
-                return BadRequest($"sortDirection parameter is invalid");
+                return BadRequest(new { error = "sortDirection parameter is invalid" });
             }
 
             var statistics = await _tournamentService.RunTournamentAsync(cancellationToken);

@@ -22,7 +22,7 @@ namespace PokemonTournamentApi.Dtos
             {
                 Id = statistic.Pokemon.Id,
                 Name = statistic.Pokemon.Name,
-                Type = statistic.Pokemon.Type.ToString(),
+                Type = statistic.Pokemon.Type.ToString().ToLowerInvariant(),
                 Wins = statistic.Wins,
                 Losses = statistic.Losses,
                 Ties = statistic.Ties

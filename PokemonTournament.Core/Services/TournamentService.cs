@@ -20,21 +20,21 @@ namespace PokemonTournament.Core.Services
 
             var statisticsById = competitors.ToDictionary(p => p.Id, p => new PokemonStatistic(p));
 
-            foreach (var (first, second) in GetRoundRobinPairs(competitors))
+            foreach (var (pokemonA, pokemonB) in GetRoundRobinPairs(competitors))
             {
-                switch (_battleResolver.Resolve(first, second))
+                switch (_battleResolver.Resolve(pokemonA, pokemonB))
                 {
                     case BattleOutcome.PokemonAWins:
-                        statisticsById[first.Id].RecordWin();
-                        statisticsById[second.Id].RecordLoss();
+                        statisticsById[pokemonA.Id].RecordWin();
+                        statisticsById[pokemonB.Id].RecordLoss();
                         break;
                     case BattleOutcome.PokemonBWins:
-                        statisticsById[second.Id].RecordWin();
-                        statisticsById[first.Id].RecordLoss();
+                        statisticsById[pokemonB.Id].RecordWin();
+                        statisticsById[pokemonA.Id].RecordLoss();
                         break;
                     default:
-                        statisticsById[first.Id].RecordTie();
-                        statisticsById[second.Id].RecordTie();
+                        statisticsById[pokemonA.Id].RecordTie();
+                        statisticsById[pokemonB.Id].RecordTie();
                         break;
                 }
             }
