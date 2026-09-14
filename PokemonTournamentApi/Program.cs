@@ -1,4 +1,4 @@
-using PokemonTournamentApi.Services;
+using PokemonTournament.Core.Services;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -9,12 +9,15 @@ builder.Services.AddControllers();
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 
-builder.Services.AddHttpClient<IPokemonService, PokemonService>(client =>
+builder.Services.AddHttpClient<IPokeApiClient, PokeApiClient>(client =>
 {
     var baseUrl = builder.Configuration["PokeApi:BaseUrl"]
         ?? throw new InvalidOperationException("Missing configuration value 'PokeApi:BaseUrl'.");
     client.BaseAddress = new Uri(baseUrl);
 });
+
+builder.Services.AddSingleton<IBattleResolver, BattleResolver>();
+builder.Services.AddScoped<ITournamentService, TournamentService>();
 
 var app = builder.Build();
 
